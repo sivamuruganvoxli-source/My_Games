@@ -2,230 +2,799 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://quge5.com/88/tag.min.js" data-zone="266719" async data-cfasync="false"></script>
-<title>Siva Game Hub 🎮</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="monetag" content="7b6f4ad88e180e349c9f0622c2afa6b8">
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+<script src="https://quge5.com/88/tag.min.js" data-zone="266719" async data-cfasync="false"></script>
+<!-- ===================== SEO ===================== -->
+<title>My Games Bay — Free Browser Games | Play Instantly, No Download</title>
+<meta name="description" content="My Games Bay is a free browser game hub with Action, Arcade, Puzzle, Multiplayer and Strategy games. No downloads, no sign-up — click and play instantly.">
+<meta name="keywords" content="free browser games, online games, play games no download, arcade games, puzzle games, multiplayer games, strategy games, neon arena, chess online, boxing game, gravity loop, click speed game">
+<meta name="robots" content="index, follow">
+<meta name="author" content="My Games Bay">
+<link rel="canonical" href="https://my-games-bay.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="My Games Bay">
+<meta property="og:title" content="My Games Bay — Free Browser Games">
+<meta property="og:description" content="A neon-lit hub of free, instant-play browser games. No installs, no sign-up — just pick a game and play.">
+<meta property="og:url" content="https://my-games-bay.vercel.app/">
+<meta property="og:image" content="https://my-games-bay.vercel.app/og-cover.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Games Bay — Free Browser Games">
+<meta name="twitter:description" content="A neon-lit hub of free, instant-play browser games. No installs, no sign-up required.">
+<meta name="twitter:image" content="https://my-games-bay.vercel.app/og-cover.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "My Games Bay",
+  "url": "https://my-games-bay.vercel.app/",
+  "description": "A free browser game hub featuring Action, Arcade, Puzzle, Multiplayer and Strategy games.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://my-games-bay.vercel.app/?search={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
 }
+</script>
+<script type="application/ld+json" id="ld-gamelist">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": []
+}
+</script>
+
+<style>
+/* ================= design tokens ================= */
+:root{
+  --bg:#070b14;
+  --bg-alt:#0b1120;
+  --grid-line:rgba(255,255,255,0.035);
+  --surface:rgba(255,255,255,0.05);
+  --surface-hover:rgba(255,255,255,0.09);
+  --border:rgba(255,255,255,0.1);
+  --border-strong:rgba(255,255,255,0.2);
+  --text:#eaf2ff;
+  --muted:#8ea0bd;
+  --muted-dim:#5c6b85;
+
+  --cyan:#00f0ff;
+  --magenta:#ff2ee6;
+  --red:#ff4757;
+  --orange:#ff9a1f;
+  --gold:#ffd166;
+  --violet:#9d5cff;
+  --blue:#3d8bff;
+  --purple:#b06bff;
+  --green:#39ff9d;
+  --yellow:#e9ff5c;
+  --pink:#ff5ca8;
+
+  --radius-lg:20px;
+  --radius-md:14px;
+  --radius-sm:9px;
+
+  --font-display:'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:'Consolas', 'Courier New', monospace;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
 
 body{
-    background:#0b1120;
-    color:white;
-    min-height:100vh;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0,240,255,0.08), transparent 60%),
+    radial-gradient(ellipse 900px 500px at 85% 0%, rgba(255,46,230,0.07), transparent 60%),
+    repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 42px),
+    repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 42px),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  min-height:100vh;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
 
-header{
-    text-align:center;
-    padding:50px 20px;
-    background:linear-gradient(135deg,#2563eb,#9333ea);
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+ul{ list-style:none; }
+button{ font-family:inherit; border:none; background:none; cursor:pointer; color:inherit; }
+input{ font-family:inherit; }
+
+:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
+
+.wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
+
+/* ================= loader ================= */
+#loader{
+  position:fixed; inset:0; z-index:999;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:18px;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+#loader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+.spinner{
+  width:56px; height:56px; border-radius:50%;
+  border:3px solid rgba(255,255,255,0.08);
+  border-top-color:var(--cyan);
+  border-right-color:var(--magenta);
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.loader-text{ font-family:var(--font-mono); font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
+
+/* ================= header ================= */
+.site-header{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background:rgba(7,11,20,0.72);
+  border-bottom:1px solid var(--border);
+}
+.site-header .wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  height:74px; gap:20px;
+}
+.logo{
+  font-size:19px; font-weight:800; letter-spacing:1px;
+  display:flex; align-items:center; gap:10px; flex-shrink:0;
+}
+.logo .dot{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--cyan); box-shadow:0 0 10px 2px var(--cyan);
+  animation:pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot{ 0%,100%{ opacity:1; } 50%{ opacity:.4; } }
+.logo span.bay{ color:var(--cyan); }
+.logo span.bay2{ color:var(--magenta); }
+
+.nav-links{ display:flex; gap:26px; font-family:var(--font-mono); font-size:12.5px; letter-spacing:1px; text-transform:uppercase; }
+.nav-links a{ color:var(--muted); transition:color .2s; }
+.nav-links a:hover{ color:var(--text); }
+
+/* ================= hero ================= */
+.hero{ position:relative; padding:72px 0 40px; overflow:hidden; border-bottom:1px solid var(--border); }
+.hero::before{
+  content:""; position:absolute; left:0; right:0; height:2px; top:0;
+  background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+  animation:scan 6s linear infinite;
+}
+@keyframes scan{ 0%{ transform:translateY(-10%); } 100%{ transform:translateY(1800%); } }
+.eyebrow{
+  font-family:var(--font-mono); font-size:12.5px; letter-spacing:3px;
+  text-transform:uppercase; color:var(--cyan); margin-bottom:16px;
+}
+.hero h1{
+  font-size:clamp(30px,5.4vw,52px); font-weight:800; line-height:1.1; letter-spacing:.3px;
+  background:linear-gradient(90deg,#fff 25%, var(--cyan) 65%, var(--magenta) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  max-width:760px; margin-bottom:18px;
+}
+.hero p.sub{ color:var(--muted); font-size:16.5px; max-width:560px; margin-bottom:32px; }
+
+/* ================= controls: search + filters ================= */
+.controls{ display:flex; flex-direction:column; gap:18px; padding-bottom:8px; }
+.search-box{
+  position:relative; max-width:440px;
+}
+.search-box input{
+  width:100%; padding:14px 18px 14px 46px;
+  background:var(--surface); border:1px solid var(--border); border-radius:100px;
+  color:var(--text); font-size:14.5px;
+  transition:border-color .2s, background .2s;
+}
+.search-box input::placeholder{ color:var(--muted-dim); }
+.search-box input:focus{ border-color:var(--cyan); background:var(--surface-hover); outline:none; }
+.search-box .icon{
+  position:absolute; left:18px; top:50%; transform:translateY(-50%);
+  color:var(--muted); font-size:15px; pointer-events:none;
+}
+.filters{ display:flex; gap:10px; flex-wrap:wrap; }
+.chip{
+  font-family:var(--font-mono); font-size:12px; letter-spacing:.8px; text-transform:uppercase;
+  padding:9px 18px; border-radius:100px; border:1px solid var(--border-strong);
+  color:var(--muted); background:transparent; transition:all .25s ease;
+}
+.chip:hover{ color:var(--text); border-color:var(--muted); background:var(--surface); }
+.chip.active{
+  color:#04070d; font-weight:700;
+  background:linear-gradient(90deg, var(--cyan), var(--magenta));
+  border-color:transparent;
 }
 
-header h1{
-    font-size:45px;
-    margin-bottom:12px;
-}
+/* ================= sections ================= */
+.section-head{ margin:56px 0 26px; }
+.section-head h2{ font-size:clamp(20px,3vw,27px); font-weight:800; }
+.result-count{ font-family:var(--font-mono); font-size:12px; color:var(--muted-dim); margin-top:4px; }
 
-header p{
-    font-size:18px;
-    color:#e5e7eb;
-}
-
-.container{
-    max-width:1200px;
-    margin:auto;
-    padding:40px 20px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:25px;
-}
+/* ================= grid & cards ================= */
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:22px; padding-bottom:70px; }
 
 .card{
-    background:#1e293b;
-    padding:25px;
-    border-radius:18px;
-    border:1px solid #334155;
-    transition:.3s;
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:2px;
+  cursor:pointer;
+  opacity:0; transform:translateY(24px);
+  transition:opacity .6s ease, transform .6s ease, box-shadow .35s ease;
 }
-
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 15px 35px rgba(0,0,0,.4);
+.card.in-view{ opacity:1; transform:translateY(0); }
+.card::before{
+  content:""; position:absolute; inset:0; border-radius:var(--radius-lg); padding:1px;
+  background:linear-gradient(135deg, var(--c1,var(--cyan)), var(--c2,var(--magenta)));
+  opacity:0; transition:opacity .35s ease;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none;
 }
-
-.icon{
-    font-size:35px;
-    margin-bottom:15px;
+.card:hover{ transform:translateY(-7px); box-shadow:0 20px 45px -20px rgba(0,0,0,.6), 0 0 30px -8px var(--c1,var(--cyan)); }
+.card:hover::before{ opacity:1; }
+.card-inner{
+  background:var(--bg-alt); border-radius:calc(var(--radius-lg) - 2px);
+  padding:24px; height:100%; display:flex; flex-direction:column;
 }
-
-.card h2{
-    font-size:23px;
-    margin-bottom:10px;
+.card-top{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
+.card-icon{ font-size:34px; filter:drop-shadow(0 0 12px var(--c1,var(--cyan))); }
+.badge{
+  font-family:var(--font-mono); font-size:10px; letter-spacing:1px; text-transform:uppercase;
+  padding:5px 11px; border-radius:100px; border:1px solid var(--border-strong); color:var(--muted); white-space:nowrap;
 }
-
-.card p{
-    color:#cbd5e1;
-    min-height:45px;
-    margin-bottom:20px;
-}
-
+.card h3{ font-size:19px; font-weight:800; margin-bottom:8px; }
+.card p{ color:var(--muted); font-size:13.8px; margin-bottom:20px; flex-grow:1; }
 .btn{
-    display:inline-block;
-    text-decoration:none;
-    color:white;
-    background:#3b82f6;
-    padding:12px 25px;
-    border-radius:10px;
-    font-weight:bold;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-weight:700; font-size:13.5px; padding:12px 22px; border-radius:var(--radius-sm);
+  border:1px solid transparent; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;
+}
+.btn-primary{ background:linear-gradient(90deg, var(--c1,var(--cyan)), var(--c2,var(--magenta))); color:#04070d; }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 25px -8px var(--c1,var(--cyan)); }
+.btn-ghost{ background:transparent; border-color:var(--border-strong); color:var(--text); }
+.btn-ghost:hover{ background:var(--surface-hover); border-color:var(--muted); }
+.btn-block{ width:100%; }
+.card-actions{ display:flex; gap:10px; }
+.no-results{ text-align:center; padding:60px 20px; color:var(--muted); display:none; }
+.no-results.show{ display:block; }
+
+/* ================= detail view ================= */
+#detail-view{ display:none; }
+#detail-view.active{ display:block; }
+#home-view.hidden{ display:none; }
+
+.page{ opacity:0; transform:translateY(10px); transition:opacity .4s ease, transform .4s ease; }
+.page.enter{ opacity:1; transform:translateY(0); }
+
+.breadcrumb{ padding:24px 0 0; font-family:var(--font-mono); font-size:12.5px; color:var(--muted-dim); letter-spacing:.5px; }
+.breadcrumb a{ color:var(--muted); }
+.breadcrumb a:hover{ color:var(--cyan); }
+
+.game-hero{ display:grid; grid-template-columns:1.1fr .9fr; gap:48px; padding:36px 0 56px; align-items:center; }
+@media (max-width:860px){ .game-hero{ grid-template-columns:1fr; padding:24px 0 36px; } }
+.icon-badge{ font-size:44px; margin-bottom:16px; filter:drop-shadow(0 0 16px var(--c1,var(--cyan))); }
+#detail-title{
+  font-size:clamp(28px,5vw,44px); font-weight:800; line-height:1.1; margin-bottom:16px;
+  background:linear-gradient(90deg,#fff 20%, var(--c1,var(--cyan)) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+#detail-desc{ color:var(--muted); font-size:15.5px; max-width:520px; margin-bottom:24px; }
+.meta-list{ display:grid; grid-template-columns:1fr 1fr; gap:14px 24px; margin-bottom:28px; max-width:400px; }
+.meta-list span.label{ display:block; font-family:var(--font-mono); font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted-dim); margin-bottom:4px; }
+.meta-list span.value{ font-family:var(--font-mono); font-size:13.5px; color:var(--text); }
+.cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+
+.screenshot{
+  position:relative; aspect-ratio:16/10; border-radius:var(--radius-lg); border:1px solid var(--border-strong);
+  background:linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 14px);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.7), 0 0 40px -12px var(--c1,var(--cyan));
+  overflow:hidden;
+}
+.screenshot::after{
+  content:""; position:absolute; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--c1,var(--cyan)), transparent);
+  animation:scan 4.5s linear infinite; opacity:.7;
+}
+.screenshot .ph-icon{ font-size:56px; opacity:.85; }
+.screenshot .ph-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted-dim); }
+
+.related-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; padding-bottom:70px; }
+
+/* ================= back to top ================= */
+#back-to-top{
+  position:fixed; right:24px; bottom:24px; z-index:60;
+  width:48px; height:48px; border-radius:50%;
+  background:linear-gradient(135deg, var(--cyan), var(--magenta));
+  color:#04070d; font-size:18px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 12px 28px -10px rgba(0,240,255,.5);
+  opacity:0; visibility:hidden; transform:translateY(12px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s ease;
+}
+#back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+#back-to-top:hover{ transform:translateY(-4px); }
+
+/* ================= footer ================= */
+footer{ border-top:1px solid var(--border); padding:40px 0; margin-top:20px; }
+footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+footer p{ font-family:var(--font-mono); font-size:12px; color:var(--muted-dim); letter-spacing:.5px; }
+.foot-links{ display:flex; gap:20px; font-family:var(--font-mono); font-size:12px; }
+.foot-links a{ color:var(--muted); }
+.foot-links a:hover{ color:var(--cyan); }
+.foot-cats{ display:flex; gap:14px; flex-wrap:wrap; font-family:var(--font-mono); font-size:11px; color:var(--muted-dim); }
+
+@media (max-width:640px){
+  .nav-links{ display:none; }
+  .site-header .wrap{ height:64px; }
+  .hero{ padding:52px 0 32px; }
+  .meta-list{ max-width:100%; }
+  #back-to-top{ right:16px; bottom:16px; width:44px; height:44px; }
 }
 
-.btn:hover{
-    background:#2563eb;
-}
-
-footer{
-    text-align:center;
-    padding:30px;
-    color:#94a3b8;
+@media (prefers-reduced-motion: reduce){
+  .hero::before, .screenshot::after, .logo .dot{ animation:none; }
+  .card, .btn, .page{ transition:none; }
 }
 </style>
-
 </head>
-
 <body>
 
-<header>
-    <h1>🎮 Siva Game Hub</h1>
-    <p>Play my collection of free browser games</p>
+<!-- ================= loader ================= -->
+<div id="loader">
+  <div class="spinner"></div>
+  <div class="loader-text">Loading My Games Bay…</div>
+</div>
+
+<!-- ================= header ================= -->
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="/" id="logo-link"><span class="dot"></span>MY GAMES<span class="bay"> BAY</span></a>
+    <nav class="nav-links">
+      <a href="#" id="nav-games">Games</a>
+      <a href="#about-section" id="nav-about">About</a>
+    </nav>
+  </div>
 </header>
 
+<!-- ================= HOME VIEW ================= -->
+<div id="home-view" class="page enter">
 
-<div class="container">
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">// Free · Instant · No Install</p>
+      <h1>Pick a cartridge. Press play. No loading screens, no accounts.</h1>
+      <p class="sub">My Games Bay is a hand-picked arcade of free browser games — search, filter by category, and jump straight into a match.</p>
 
-<div class="grid">
+      <div class="controls">
+        <div class="search-box">
+          <span class="icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search games…" autocomplete="off">
+        </div>
+        <div class="filters" id="filters">
+          <button class="chip active" data-cat="All">All</button>
+          <button class="chip" data-cat="Action">Action</button>
+          <button class="chip" data-cat="Arcade">Arcade</button>
+          <button class="chip" data-cat="Puzzle">Puzzle</button>
+          <button class="chip" data-cat="Multiplayer">Multiplayer</button>
+          <button class="chip" data-cat="Strategy">Strategy</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <main class="wrap" id="games">
+    <div class="section-head">
+      <h2>Game Library</h2>
+      <p class="result-count" id="result-count"></p>
+    </div>
 
-<div class="card">
-<div class="icon">🏙️</div>
-<h2>Tamil City</h2>
-<p>Explore the Tamil City adventure world.</p>
-<a class="btn" href="https://tamil-city-web-game.vercel.app/" target="_blank">Play Now</a>
+    <div class="grid" id="game-grid"></div>
+    <div class="no-results" id="no-results">No games match your search. Try a different keyword or category.</div>
+  </main>
+
+  <section class="wrap" id="about-section" style="padding:20px 0 60px;">
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:14px;">About My Games Bay</h2>
+    <p style="color:var(--muted);max-width:760px;font-size:15px;">My Games Bay is a personal collection of free, browser-based games. Every title runs instantly in your browser tab — nothing to install, no account required. Search or filter by category above, then click any game to see details before you play.</p>
+  </section>
 </div>
 
+<!-- ================= DETAIL VIEW ================= -->
+<div id="detail-view">
+  <div class="wrap breadcrumb">
+    <a href="/" id="crumb-home">Home</a> / <a href="#" id="crumb-games">Games</a> / <span id="crumb-current"></span>
+  </div>
 
-<div class="card">
-<div class="icon">🪳</div>
-<h2>Cockroach Man</h2>
-<p>Survive and escape through obstacles.</p>
-<a class="btn" href="https://cockroach-man.vercel.app/" target="_blank">Play Now</a>
+  <main class="wrap">
+    <section class="game-hero">
+      <div>
+        <div class="icon-badge" id="detail-icon"></div>
+        <h1 id="detail-title"></h1>
+        <p id="detail-desc"></p>
+
+        <div class="meta-list">
+          <div><span class="label">Category</span><span class="value" id="detail-cat"></span></div>
+          <div><span class="label">Price</span><span class="value">Free</span></div>
+          <div><span class="label">Platform</span><span class="value">Web Browser</span></div>
+          <div><span class="label">Controls</span><span class="value" id="detail-controls"></span></div>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" id="detail-play" href="#" target="_blank" rel="noopener">Play Now</a>
+          <button class="btn btn-ghost" id="detail-back">← Back to Games</button>
+        </div>
+      </div>
+
+      <div class="screenshot" id="detail-screenshot" style="--c1:var(--cyan);--c2:var(--magenta);">
+        <div class="ph-icon" id="detail-icon-2"></div>
+        <div class="ph-label">Screenshot Preview</div>
+      </div>
+    </section>
+
+    <section class="section-head" style="margin-top:0;">
+      <p class="eyebrow">// You Might Also Like</p>
+      <h2>Related games</h2>
+    </section>
+
+    <div class="related-grid" id="related-grid"></div>
+  </main>
 </div>
 
-
-<div class="card">
-<div class="icon">🦎</div>
-<h2>Chameleon</h2>
-<p>Change colors and survive challenges.</p>
-<a class="btn" href="https://meccha-chameleon-wheat.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🏃</div>
-<h2>Cockroach Dash</h2>
-<p>Fast endless running adventure.</p>
-<a class="btn" href="https://cockroach-dash.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🐝</div>
-<h2>Queen Bee Kitchen</h2>
-<p>Cooking and kitchen fun game.</p>
-<a class="btn" href="https://queen-bee-kitchen-game.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🍳</div>
-<h2>Queen Bee Kitchen Model</h2>
-<p>Prototype version of kitchen game.</p>
-<a class="btn" href="https://queen-bee-kitchen-game-model.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🦊</div>
-<h2>Kullanari Run</h2>
-<p>Run, jump and avoid obstacles.</p>
-<a class="btn" href="https://kullanari-run.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">⚡</div>
-<h2>Neon Dodge</h2>
-<p>Neon arcade survival challenge.</p>
-<a class="btn" href="https://neon-dodge-five.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🌈</div>
-<h2>Neon Arena P2P</h2>
-<p>Multiplayer battle arena game.</p>
-<a class="btn" href="https://neon-arena-p2p.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🥊</div>
-<h2>1v1 Boxing</h2>
-<p>Fight your opponent in boxing battle.</p>
-<a class="btn" href="https://1v1-boxing.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">♟️</div>
-<h2>Chess Dun</h2>
-<p>Classic chess strategy challenge.</p>
-<a class="btn" href="https://chess-dun-one.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🌀</div>
-<h2>Gravity Loop</h2>
-<p>Control gravity and survive the loop.</p>
-<a class="btn" href="https://gravity-loop.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-<div class="card">
-<div class="icon">🖱️</div>
-<h2>Click Me</h2>
-<p>Click speed challenge and high score game.</p>
-<a class="btn" href="https://click-me-mocha.vercel.app/" target="_blank">Play Now</a>
-</div>
-
-
-</div>
-
-</div>
-
-
+<!-- ================= footer ================= -->
 <footer>
-© 2026 Siva Game Hub 🎮
+  <div class="wrap">
+    <p>© 2026 My Games Bay</p>
+    <div class="foot-cats">
+      <span>Action</span><span>Arcade</span><span>Puzzle</span><span>Multiplayer</span><span>Strategy</span>
+    </div>
+    <div class="foot-links">
+      <a href="/" id="foot-home">Home</a>
+      <a href="#games" id="foot-games">Games</a>
+    </div>
+  </div>
 </footer>
 
+<button id="back-to-top" aria-label="Back to top">↑</button>
 
+<script>
+(function(){
+  "use strict";
+
+  /* ================= game data ================= */
+  var GAMES = [
+    { slug:"tamil-city", title:"Tamil City", icon:"🏙️", category:"Action",
+      short:"Explore an open, story-driven Tamil city adventure.",
+      desc:"Wander a lively city map, take on missions, and uncover a story-driven adventure set in a richly detailed Tamil-inspired world.",
+      controls:"Keyboard", url:"https://tamil-city-web-game.vercel.app/" },
+    { slug:"cockroach-man", title:"Cockroach Man", icon:"🪳", category:"Action",
+      short:"Survive and escape through obstacles.",
+      desc:"Scurry, dodge, and squeeze through tight obstacle courses as you guide Cockroach Man to safety, one narrow escape at a time.",
+      controls:"Keyboard", url:"https://cockroach-man.vercel.app/" },
+    { slug:"chameleon", title:"Chameleon", icon:"🦎", category:"Puzzle",
+      short:"Change colors and survive challenges.",
+      desc:"Blend into shifting environments by matching colors on command, solving each challenge before your camouflage runs out.",
+      controls:"Keyboard / Tap", url:"https://meccha-chameleon-wheat.vercel.app/" },
+    { slug:"cockroach-dash", title:"Cockroach Dash", icon:"🏃", category:"Arcade",
+      short:"Fast endless running adventure.",
+      desc:"An endless runner spin-off — sprint through an ever-accelerating obstacle course and chase your best distance.",
+      controls:"Keyboard / Tap", url:"https://cockroach-dash.vercel.app/" },
+    { slug:"queen-bee-kitchen", title:"Queen Bee Kitchen", icon:"🐝", category:"Puzzle",
+      short:"Cooking and kitchen fun game.",
+      desc:"Run a buzzing kitchen as the Queen Bee — plate orders quickly and keep every station humming under time pressure.",
+      controls:"Mouse / Tap", url:"https://queen-bee-kitchen-game.vercel.app/" },
+    { slug:"queen-bee-kitchen-model", title:"Queen Bee Kitchen Model", icon:"🍳", category:"Puzzle",
+      short:"Prototype version of kitchen game.",
+      desc:"An early prototype build of Queen Bee Kitchen, showing the core recipe and plating mechanics in a leaner form.",
+      controls:"Mouse / Tap", url:"https://queen-bee-kitchen-game-model.vercel.app/" },
+    { slug:"kullanari-run", title:"Kullanari Run", icon:"🦊", category:"Action",
+      short:"Run, jump and avoid obstacles.",
+      desc:"A snappy platform-runner — time your jumps, weave through hazards, and keep momentum for the longest run possible.",
+      controls:"Keyboard", url:"https://kullanari-run.vercel.app/" },
+    { slug:"neon-dodge", title:"Neon Dodge", icon:"⚡", category:"Arcade",
+      short:"Neon arcade survival challenge.",
+      desc:"Dodge a relentless stream of neon hazards in this reflex-testing survival arcade game — how long can you last?",
+      controls:"Keyboard / Tap", url:"https://neon-dodge-five.vercel.app/" },
+    { slug:"neon-arena", title:"Neon Arena P2P", icon:"🌈", category:"Multiplayer",
+      short:"Multiplayer battle arena game.",
+      desc:"Step into a glowing peer-to-peer battle arena — dodge incoming fire, land your hits, and outlast real opponents.",
+      controls:"Keyboard", url:"https://neon-arena-p2p.vercel.app/" },
+    { slug:"boxing", title:"1v1 Boxing", icon:"🥊", category:"Multiplayer",
+      short:"Fight your opponent in boxing battle.",
+      desc:"Time your punches, block combos, and knock out your opponent before the bell rings in this stripped-down boxing duel.",
+      controls:"Keyboard", url:"https://1v1-boxing.vercel.app/" },
+    { slug:"chess", title:"Chess Dun", icon:"♟️", category:"Strategy",
+      short:"Classic chess strategy challenge.",
+      desc:"Classic chess in a clean neon interface — plan your openings and outmaneuver your opponent one square at a time.",
+      controls:"Mouse / Tap", url:"https://chess-dun-one.vercel.app/" },
+    { slug:"gravity-loop", title:"Gravity Loop", icon:"🌀", category:"Puzzle",
+      short:"Control gravity and survive the loop.",
+      desc:"Flip gravity on command to loop through shifting corridors and dodge hazards in this reflex-driven arcade puzzler.",
+      controls:"Keyboard / Tap", url:"https://gravity-loop.vercel.app/" },
+    { slug:"click-me", title:"Click Me", icon:"🖱️", category:"Arcade",
+      short:"Click speed challenge and high score game.",
+      desc:"No plot, no power-ups — just a timer and a button. Click Me measures your reflexes and tracks your best score.",
+      controls:"Mouse / Tap", url:"https://click-me-mocha.vercel.app/" }
+  ];
+
+  var COLOR_PAIRS = {
+    "Action":   ["var(--red)","var(--orange)"],
+    "Arcade":   ["var(--green)","var(--yellow)"],
+    "Puzzle":   ["var(--blue)","var(--purple)"],
+    "Multiplayer":["var(--cyan)","var(--magenta)"],
+    "Strategy": ["var(--gold)","var(--violet)"]
+  };
+
+  var BASE_URL = "https://my-games-bay.vercel.app";
+  var gameBySlug = {};
+  GAMES.forEach(function(g){ gameBySlug[g.slug] = g; });
+
+  var state = { search:"", category:"All" };
+
+  /* ================= DOM refs ================= */
+  var grid = document.getElementById("game-grid");
+  var noResults = document.getElementById("no-results");
+  var resultCount = document.getElementById("result-count");
+  var homeView = document.getElementById("home-view");
+  var detailView = document.getElementById("detail-view");
+
+  /* ================= render home grid ================= */
+  function cardHTML(g){
+    var pair = COLOR_PAIRS[g.category] || ["var(--cyan)","var(--magenta)"];
+    return (
+      '<article class="card" data-slug="' + g.slug + '" style="--c1:' + pair[0] + ';--c2:' + pair[1] + ';">' +
+        '<div class="card-inner">' +
+          '<div class="card-top">' +
+            '<div class="card-icon">' + g.icon + '</div>' +
+            '<span class="badge">' + g.category + '</span>' +
+          '</div>' +
+          '<h3>' + g.title + '</h3>' +
+          '<p>' + g.short + '</p>' +
+          '<div class="card-actions">' +
+            '<button class="btn btn-primary btn-block js-play" data-url="' + g.url + '">Play Now</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function renderGrid(){
+    var q = state.search.trim().toLowerCase();
+    var list = GAMES.filter(function(g){
+      var matchesCat = state.category === "All" || g.category === state.category;
+      var matchesSearch = !q || g.title.toLowerCase().indexOf(q) !== -1 || g.short.toLowerCase().indexOf(q) !== -1;
+      return matchesCat && matchesSearch;
+    });
+
+    grid.innerHTML = list.map(cardHTML).join("");
+    noResults.classList.toggle("show", list.length === 0);
+    resultCount.textContent = list.length + " game" + (list.length === 1 ? "" : "s") + " found";
+
+    // card click -> detail, play button -> external, no bubbling conflict
+    Array.prototype.forEach.call(grid.querySelectorAll(".card"), function(card){
+      card.addEventListener("click", function(e){
+        if (e.target.closest(".js-play")) return;
+        navigateTo("/games/" + card.getAttribute("data-slug"));
+      });
+    });
+    Array.prototype.forEach.call(grid.querySelectorAll(".js-play"), function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        window.open(btn.getAttribute("data-url"), "_blank", "noopener");
+      });
+    });
+
+    observeCards();
+  }
+
+  /* ================= scroll reveal ================= */
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add("in-view");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.12 });
+
+  function observeCards(){
+    Array.prototype.forEach.call(document.querySelectorAll(".card:not(.in-view)"), function(card){
+      observer.observe(card);
+    });
+  }
+
+  /* ================= search & filters ================= */
+  document.getElementById("search-input").addEventListener("input", function(e){
+    state.search = e.target.value;
+    renderGrid();
+  });
+
+  document.getElementById("filters").addEventListener("click", function(e){
+    var btn = e.target.closest(".chip");
+    if (!btn) return;
+    state.category = btn.getAttribute("data-cat");
+    Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){ c.classList.remove("active"); });
+    btn.classList.add("active");
+    renderGrid();
+  });
+
+  /* ================= detail view ================= */
+  function relatedCardHTML(g){
+    var pair = COLOR_PAIRS[g.category] || ["var(--cyan)","var(--magenta)"];
+    return (
+      '<article class="card in-view" data-slug="' + g.slug + '" style="--c1:' + pair[0] + ';--c2:' + pair[1] + ';">' +
+        '<div class="card-inner">' +
+          '<div class="card-top">' +
+            '<div class="card-icon">' + g.icon + '</div>' +
+            '<span class="badge">' + g.category + '</span>' +
+          '</div>' +
+          '<h3>' + g.title + '</h3>' +
+          '<p>' + g.short + '</p>' +
+          '<button class="btn btn-primary btn-block js-related">View Game</button>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function getRelated(current){
+    var sameCat = GAMES.filter(function(g){ return g.slug !== current.slug && g.category === current.category; });
+    var others = GAMES.filter(function(g){ return g.slug !== current.slug && g.category !== current.category; });
+    return sameCat.concat(others).slice(0, 3);
+  }
+
+  function renderDetail(slug){
+    var g = gameBySlug[slug];
+    if (!g){ navigateTo("/", true); return; }
+
+    var pair = COLOR_PAIRS[g.category] || ["var(--cyan)","var(--magenta)"];
+    document.getElementById("detail-screenshot").style.setProperty("--c1", pair[0]);
+    document.getElementById("detail-screenshot").style.setProperty("--c2", pair[1]);
+    document.getElementById("detail-icon").textContent = g.icon;
+    document.getElementById("detail-icon-2").textContent = g.icon;
+    document.getElementById("detail-title").textContent = g.title;
+    document.getElementById("detail-desc").textContent = g.desc;
+    document.getElementById("detail-cat").textContent = g.category;
+    document.getElementById("detail-controls").textContent = g.controls;
+    document.getElementById("detail-play").setAttribute("href", g.url);
+    document.getElementById("crumb-current").textContent = g.title;
+
+    var relatedGrid = document.getElementById("related-grid");
+    relatedGrid.innerHTML = getRelated(g).map(relatedCardHTML).join("");
+    Array.prototype.forEach.call(relatedGrid.querySelectorAll(".card"), function(card){
+      card.addEventListener("click", function(){
+        navigateTo("/games/" + card.getAttribute("data-slug"));
+      });
+    });
+
+    // SEO tag updates for this "route"
+    var title = g.title + " — Play Free Online | My Games Bay";
+    var desc = g.short + " Free, instant, browser-based — no download required.";
+    document.title = title;
+    setMeta('meta[name="description"]', desc);
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', desc);
+    setMeta('meta[property="og:url"]', BASE_URL + "/games/" + g.slug);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', desc);
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", BASE_URL + "/games/" + g.slug);
+
+    window.scrollTo({ top:0, behavior:"instant" in window ? "instant" : "auto" });
+
+    homeView.classList.add("hidden");
+    detailView.classList.add("active");
+    transitionIn(detailView);
+  }
+
+  function setMeta(selector, content){
+    var el = document.querySelector(selector);
+    if (el) el.setAttribute("content", content);
+  }
+
+  function showHome(){
+    document.title = "My Games Bay — Free Browser Games | Play Instantly, No Download";
+    setMeta('meta[name="description"]', "My Games Bay is a free browser game hub with Action, Arcade, Puzzle, Multiplayer and Strategy games. No downloads, no sign-up — click and play instantly.");
+    setMeta('meta[property="og:title"]', "My Games Bay — Free Browser Games");
+    setMeta('meta[property="og:description"]', "A neon-lit hub of free, instant-play browser games. No installs, no sign-up — just pick a game and play.");
+    setMeta('meta[property="og:url"]', BASE_URL + "/");
+    setMeta('meta[name="twitter:title"]', "My Games Bay — Free Browser Games");
+    setMeta('meta[name="twitter:description"]', "A neon-lit hub of free, instant-play browser games. No installs, no sign-up required.");
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", BASE_URL + "/");
+
+    detailView.classList.remove("active");
+    homeView.classList.remove("hidden");
+    transitionIn(homeView);
+  }
+
+  function transitionIn(el){
+    el.classList.remove("enter");
+    void el.offsetWidth; // reflow
+    el.classList.add("enter");
+  }
+
+  /* ================= routing (History API) ================= */
+  function routeFromLocation(push){
+    var path = window.location.pathname;
+    var match = path.match(/^\/games\/([a-z0-9-]+)\/?$/i);
+    if (match && gameBySlug[match[1]]){
+      renderDetail(match[1]);
+    } else {
+      showHome();
+    }
+  }
+
+  function navigateTo(path, replace){
+    if (replace){
+      window.history.replaceState({ path:path }, "", path);
+    } else {
+      window.history.pushState({ path:path }, "", path);
+    }
+    routeFromLocation();
+  }
+
+  window.addEventListener("popstate", function(){ routeFromLocation(); });
+
+  document.getElementById("detail-back").addEventListener("click", function(){ navigateTo("/"); });
+  document.getElementById("crumb-home").addEventListener("click", function(e){ e.preventDefault(); navigateTo("/"); });
+  document.getElementById("crumb-games").addEventListener("click", function(e){ e.preventDefault(); navigateTo("/"); });
+  document.getElementById("logo-link").addEventListener("click", function(e){ e.preventDefault(); navigateTo("/"); });
+  document.getElementById("foot-home").addEventListener("click", function(e){ e.preventDefault(); navigateTo("/"); });
+  document.getElementById("nav-games").addEventListener("click", function(e){
+    e.preventDefault();
+    if (detailView.classList.contains("active")) navigateTo("/");
+    document.getElementById("games").scrollIntoView({ behavior:"smooth" });
+  });
+  document.getElementById("foot-games").addEventListener("click", function(e){
+    if (detailView.classList.contains("active")){
+      e.preventDefault();
+      navigateTo("/");
+      setTimeout(function(){ document.getElementById("games").scrollIntoView({ behavior:"smooth" }); }, 50);
+    }
+  });
+
+  /* ================= back to top ================= */
+  var backToTop = document.getElementById("back-to-top");
+  window.addEventListener("scroll", function(){
+    backToTop.classList.toggle("show", window.scrollY > 420);
+  });
+  backToTop.addEventListener("click", function(){
+    window.scrollTo({ top:0, behavior:"smooth" });
+  });
+
+  /* ================= JSON-LD game list (for indexing) ================= */
+  var ldList = document.getElementById("ld-gamelist");
+  var ldData = JSON.parse(ldList.textContent);
+  ldData.itemListElement = GAMES.map(function(g, i){
+    return {
+      "@type": "ListItem",
+      "position": i + 1,
+      "item": {
+        "@type": "VideoGame",
+        "name": g.title,
+        "url": BASE_URL + "/games/" + g.slug,
+        "genre": g.category,
+        "applicationCategory": "Game",
+        "gamePlatform": "Web Browser",
+        "description": g.short
+      }
+    };
+  });
+  ldList.textContent = JSON.stringify(ldData);
+
+  /* ================= init ================= */
+  renderGrid();
+  routeFromLocation();
+
+  window.addEventListener("load", function(){
+    setTimeout(function(){
+      document.getElementById("loader").classList.add("hide");
+    }, 350);
+  });
+})();
+</script>
 </body>
 </html>
