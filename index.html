@@ -793,7 +793,78 @@ footer p{ font-family:var(--font-mono); font-size:12px; color:var(--muted-dim); 
     };
   });
   ldList.textContent = JSON.stringify(ldData);
+// ---------- Search ----------
+const searchInput = document.getElementById("search-input");
 
+if (searchInput) {
+    searchInput.addEventListener("change", function () {
+        posthog.capture("game_search", {
+            query: this.value
+        });
+    });
+}
+
+// ---------- Category Filters ----------
+document.querySelectorAll(".chip").forEach(button => {
+    button.addEventListener("click", function () {
+        posthog.capture("category_selected", {
+            category: this.dataset.cat
+        });
+    });
+});
+
+// ---------- Play Button ----------
+const playBtn = document.getElementById("detail-play");
+
+if (playBtn) {
+    playBtn.addEventListener("click", function () {
+        posthog.capture("play_now_clicked", {
+            game_name: document.getElementById("detail-title")?.textContent || "Unknown",
+            category: document.getElementById("detail-cat")?.textContent || "Unknown"
+        });
+    });
+}
+
+// ---------- Back Button ----------
+const backBtn = document.getElementById("detail-back");
+
+if (backBtn) {
+    backBtn.addEventListener("click", function () {
+        posthog.capture("back_to_games");
+    });
+}
+
+// ---------- Related Games ----------
+const relatedGrid = document.getElementById("related-grid");
+
+if (relatedGrid) {
+    relatedGrid.addEventListener("click", function (e) {
+        const card = e.target.closest(".game-card");
+        if (!card) return;
+
+        posthog.capture("related_game_clicked", {
+            game_name: card.dataset.name || "Unknown"
+        });
+    });
+}
+
+// ---------- No Results ----------
+const observer = new MutationObserver(() => {
+    const noResults = document.getElementById("no-results");
+
+    if (noResults &&
+        window.getComputedStyle(noResults).display !== "none") {
+
+        posthog.capture("search_no_results", {
+            query: searchInput?.value || ""
+        });
+    }
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
   /* ================= init ================= */
   renderGrid();
   routeFromLocation();
